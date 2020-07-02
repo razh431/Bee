@@ -34,7 +34,7 @@ def bee_update_info(bee, frame_num):
     with open("bee3_antenna.csv") as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
         #20th frame for now, 1st 3 is just headers
-        row_num =[row for idx, row in enumerate(reader) if idx == frame_num - 1026]
+        row_num =[row for idx, row in enumerate(reader) if idx == frame_num - 1027]
 
     bee.x_base = float(row_num[0][7]) #150.921
     bee.y_base = float(row_num[0][8]) #109.225

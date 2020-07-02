@@ -6,21 +6,22 @@ import csv
 import cv2
 import antennae
 
-def pos(bee, frame_num):
+def pos(bee, frame_num, body_part_x, body_part_y):
     antennae.bee_update_info(bee, frame_num)
 
-    body_parts = [
-        bee.x_base,
-        bee.y_base,
-        # bee.x_sting,
-        # bee.y_sting,
-        # bee.x_right_ant,
-        # bee.y_right_ant,
-        # bee.x_left_ant,
-        # bee.y_left_ant
-    ]
-    for i in range(0, len(body_parts), 2):
-        x, y = adjust_pos(body_parts[i], body_parts[i+1], bee, frame_num)
+    # body_parts = [
+    #     bee.x_base,
+    #     bee.y_base,
+    #     bee.x_sting,
+    #     bee.y_sting,
+    #     bee.x_right_ant,
+    #     bee.y_right_ant,
+    #     bee.x_left_ant,
+    #     bee.y_left_ant
+    # ]
+    # for i in range(0, len(body_parts), 2):
+    x, y = adjust_pos(body_part_x, body_part_y, bee, frame_num)
+
     return x, y
 
 def adjust_pos(body_part_x, body_part_y, bee, frame_num):
@@ -35,18 +36,18 @@ def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 
     #dumb way to do this: if even, then it's x position
 
-    # print("frame_num right before adjusted: " + str(frame_num))
-    # print("base x: " + str(bee.x_base))
-    # print("base y: " + str(bee.y_base))
+    print("frame_num right before adjusted: " + str(frame_num))
+    print("base x: " + str(body_part_x))
+    print("base y: " + str(body_part_y))
     if body_part_x > 100:
         x += body_part_x - 100
     elif body_part_x < 100:
-        x -= body_part_x - 100
+        x -= 100 - body_part_x
 
     if body_part_y > 100:
         y += body_part_y - 100
     elif body_part_y < 100:
-        y -= body_part_y - 100
+        y -= 100 - body_part_y
 
     return x, y
 
@@ -69,12 +70,39 @@ def map():
 
         print(int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
 
-        x, y = pos(bee, int(cap.get(cv2.CAP_PROP_POS_FRAMES)))
-        x = np.float32(x/4)
-        y = np.float32(y/4)
+        body_parts = [
+            bee.x_base,
+            bee.y_base,
+            bee.x_sting,
+            bee.y_sting,
+            bee.x_right_ant,
+            bee.y_right_ant,
+            bee.x_left_ant,
+            bee.y_left_ant
+        ]
 
-        #opencv is BGR instad of RGB
-        circle = cv2.circle(frame, (x, y), 3, (198, 173, 0), -1)
+
+        for i in range(0, len(body_parts), 2):
+            x, y = pos(bee, int(cap.get(cv2.CAP_PROP_POS_FRAMES)), body_parts[i], body_parts[i+1])
+
+            # print("frame_num right before adjusted: " + str(frame_num))
+            # print("base x: " + str(x))
+            # print("base y: " + str(x))
+
+            x = np.float32(x/4)
+            y = np.float32(y/4)
+
+            print('x' )
+            #opencv is BGR instad of RGB
+            if (i == 0):
+                BGR = (198, 173, 0)
+            elif (i == 2):
+                BGR = (54, 115, 230)
+            elif (i == 3):
+                BGR = (227, 99, 55)
+            else:
+                BGR = (147, 58, 52)
+            circle = cv2.circle(frame, (x, y), 3, BGR, -1)
         cv2.imshow('frame', frame)
 
         cv2.waitKey(1500)
