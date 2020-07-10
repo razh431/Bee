@@ -5,6 +5,8 @@ import bee1
 import csv
 import bee_info
 
+"""these frames are adjusted from new excel spreadsheet"""
+
 def ant_cba_angle_2d(frame):
     bee = bee_info.bee_info(frame)
 
@@ -35,23 +37,21 @@ def angle_3d(frame):
     dist = numpy.linalg.norm(v_video)
     angle = math.degrees(numpy.arccos(numpy.clip(dist/52.0, -1.0, 1.0)))
 
-    print(angle)
 
-
-def ant_len():
+def ant_len(startFrame, endFrame):
     '''returns the 98th precentile of the antennae lengths: let's go with 52'''
     antr_length = []
     antl_length = []
 
-    with open("bee3_antenna.csv") as csvfile:
+    with open("bee3_modified.csv") as csvfile:
         reader = csv.reader(csvfile)
 
-        row_num =[row for idx, row in enumerate(reader) if idx in range(22,913)]
+        row_num =[row for idx, row in enumerate(reader) if idx in range(startFrame, endFrame)]
 
         for x in range(0, len(row_num)):
-            v_right_ant = numpy.array((float(row_num[x][4]), float(row_num[x][5])))
-            v_left_ant = numpy.array((float(row_num[x][1]), float(row_num[x][2])))
-            v_base = numpy.array((float(row_num[x][7]), float(row_num[x][8])))
+            v_right_ant = numpy.array((float(row_num[x][6]), float(row_num[x][7])))
+            v_left_ant = numpy.array((float(row_num[x][4]), float(row_num[x][5])))
+            v_base = numpy.array((float(row_num[x][8]), float(row_num[x][9])))
 
             distr = numpy.linalg.norm(v_right_ant-v_base)
             distl = numpy.linalg.norm(v_left_ant-v_base)
@@ -64,8 +64,8 @@ def ant_len():
             # if len(antl_length) > 30:
             #     antl_length.remove(min(antl_length))
 
-    print(numpy.percentile(antr_length, 98))
-    print(numpy.percentile(antl_length, 98))
+    # print(numpy.percentile(antr_length, 98))
+    # print(numpy.percentile(antl_length, 98))
 
     # antr_length.sort()
     # antl_length.sort()
@@ -90,5 +90,5 @@ def angle_between(v1, v2):
 
 
 # ant_cba_angle_2d(1090)
-ant_len()
+# ant_len(1047,1047)
 # angle_3d(1047)

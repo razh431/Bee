@@ -5,6 +5,8 @@ import math
 import csv
 import cv2
 import bee_info
+from start_end import startFrame
+from start_end import endFrame
 
 def pos(bee, frame_num, body_part_x, body_part_y):
     bee_info.bee_update_info(bee, frame_num)
@@ -16,7 +18,7 @@ def pos(bee, frame_num, body_part_x, body_part_y):
 def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 
     #petiole is at 100,100 around, a few pixels off
-    with open('single_bee_vids/bee3_1029_1940xypts.csv') as fd:
+    with open('bee3_modified.csv') as fd:
         reader=csv.reader(fd)
         frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num]
 
@@ -45,12 +47,13 @@ def map():
 
     #really really weird calculation: 1029-- 0-- 4, so 17th frame from excel
     # that I was using becomes 1047- 17th
-    startFrame = 1047
+
+
     cap.set(1, startFrame)
 
-    bee = bee_info.bee_info(startFrame)
+    bee = bee_info.bee_info(0)
 
-    while(int(cap.get(cv2.CAP_PROP_POS_FRAMES)) < 1100):
+    while(int(cap.get(cv2.CAP_PROP_POS_FRAMES)) < endFrame):
         ret, frame = cap.read()
         if ret == False:
             break
@@ -72,7 +75,7 @@ def map():
 
 
         for i in range(0, len(body_parts), 2):
-            x, y = pos(bee, int(cap.get(cv2.CAP_PROP_POS_FRAMES)), body_parts[i], body_parts[i+1])
+            x, y = pos(bee, int(cap.get(cv2.CAP_PROP_POS_FRAMES)-startFrame), body_parts[i], body_parts[i+1])
 
             # print("frame_num right before adjusted: " + str(frame_num))
             # print("base x: " + str(x))

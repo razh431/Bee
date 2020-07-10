@@ -3,6 +3,12 @@ import os
 import csv
 import numpy as np
 import glob
+from start_end import startFrame
+from start_end import endFrame
+
+"""make sure to change the start and end frames in plot and new_mapping files"""
+
+#
 
 cap= cv2.VideoCapture('/Users/rachelzhou/summer_research/swarm6.mp4')
 def make_480p():
@@ -11,11 +17,10 @@ def make_480p():
 
 def crop():
 
-    startFrame = 1029
     cap.set(1, startFrame)
     i= startFrame
 
-    while(int(cap.get(cv2.CAP_PROP_POS_FRAMES) < 1940)):
+    while(int(cap.get(cv2.CAP_PROP_POS_FRAMES) < endFrame)):
         ret, frame = cap.read()
         if ret == False:
             break
@@ -24,7 +29,7 @@ def crop():
 
         with open('single_bee_vids/bee3_1029_1940xypts.csv') as fd:
             reader=csv.reader(fd)
-            frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num]
+            frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num-startFrame]
 
         x = int(float(frame_num_rows[0][0]))
         y = int(float(frame_num_rows[0][1]))
@@ -63,7 +68,7 @@ def frame_into_vid():
 
 # make_480p()
 # crop()
-frame_into_vid()
+# frame_into_vid()
 
 cap.release()
 cv2.destroyAllWindows()

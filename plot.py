@@ -5,39 +5,50 @@ import bee1
 
 import angle
 import bee_info
-import antennae
 import velocity
-
+import single
 import matplotlib.pyplot as plt
+
+from start_end import startFrame
+from start_end import endFrame
+#x axis
 
 """velocity, antennae length, angles, plot on same"""
 
-#x axis
-x = [frame for frame in range(1048, 1939, 1)]
+x = [frame for frame in range(startFrame, endFrame, 1)]
 # angle = [angle.ant_cba_angle_2d(i) for i in x]
 
 #angles between body and antennas
 l_angle = []
 r_angle = []
 for i in x:
-    left_angle, right_angle = angle.ant_cba_angle_2d(i)
+    left_angle, right_angle = angle.ant_cba_angle_2d(i-startFrame)
     l_angle.append(left_angle)
     r_angle.append(right_angle)
 
 #length of antennas throughout video
-antl_length, antr_length = angle.ant_len()
-# print(len(l_angle))
+antl_length, antr_length = angle.ant_len(0, endFrame-startFrame)
+if len(antl_length) == len(antr_length):
+    print('please make this work')
 #velocity of bees
-vel = velocity.vel()
+vel = velocity.vel(endFrame-startFrame)
+total_angle = [antl_length[i] + antr_length[i] for i in range(len(antl_length))]
 
 
-# l_angle_l = plt.plot(x, l_angle)
-plt.plot(x,r_angle + l_angle)
-l_ant_len_l = plt.plot(x, antl_length)
+if len(vel) != len(x):
+    x = x[1:-1]
+    r_angle = r_angle[1:-1]
+    l_angle = l_angle[1:-1]
+    total_angle = total_angle[1:-1]
+    antl_length = antl_length[1:-1]
+    antr_length = antr_length[1:-1]
+
+
+plt.plot(x, total_angle)
 plt.plot(x, antr_length)
+plt.plot(x, antl_length)
 vel_l = plt.plot(x, vel)
 
-# plt.legend((l_angle_l, l_ant_len_l, vel_l), ('Left angle', 'Left antenna length', 'velocity'))
 
 
 plt.xlabel('frame number')
