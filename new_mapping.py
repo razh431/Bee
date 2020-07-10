@@ -4,22 +4,11 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import cv2
-import antennae
+import bee_info
 
 def pos(bee, frame_num, body_part_x, body_part_y):
-    antennae.bee_update_info(bee, frame_num)
+    bee_info.bee_update_info(bee, frame_num)
 
-    # body_parts = [
-    #     bee.x_base,
-    #     bee.y_base,
-    #     bee.x_sting,
-    #     bee.y_sting,
-    #     bee.x_right_ant,
-    #     bee.y_right_ant,
-    #     bee.x_left_ant,
-    #     bee.y_left_ant
-    # ]
-    # for i in range(0, len(body_parts), 2):
     x, y = adjust_pos(body_part_x, body_part_y, bee, frame_num)
 
     return x, y
@@ -36,9 +25,9 @@ def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 
     #dumb way to do this: if even, then it's x position
 
-    print("frame_num right before adjusted: " + str(frame_num))
-    print("base x: " + str(body_part_x))
-    print("base y: " + str(body_part_y))
+    # print("frame_num right before adjusted: " + str(frame_num))
+    # print("base x: " + str(body_part_x))
+    # print("base y: " + str(body_part_y))
     if body_part_x > 100:
         x += body_part_x - 100
     elif body_part_x < 100:
@@ -59,7 +48,7 @@ def map():
     startFrame = 1047
     cap.set(1, startFrame)
 
-    bee = antennae.bee_info(startFrame)
+    bee = bee_info.bee_info(startFrame)
 
     while(int(cap.get(cv2.CAP_PROP_POS_FRAMES)) < 1100):
         ret, frame = cap.read()
@@ -92,7 +81,6 @@ def map():
             x = np.float32(x/4)
             y = np.float32(y/4)
 
-            print('x' )
             #opencv is BGR instad of RGB
             if (i == 0):
                 BGR = (198, 173, 0)

@@ -18,12 +18,12 @@ class Bee():
     def cba(self):
         '''returns 2points on cba'''
 
-        y = np.array([self.y_base, self.y_sting, self.y_petiole])
-        x = np.array([self.x_base, self.x_sting, self.x_petiole])
+        y = np.array([self.y_base, self.y_petiole])
+        x = np.array([self.x_base, self.x_petiole])
 
         #https://jcornford.github.io/2017-01-02-lines-of-best-fit/
         m, b  = np.polyfit(x,y,deg=1)
-        print(str(m) + "x + " + str(b))
+        # print(str(m) + "x + " + str(b))
 
         #just 2 points I chose, where x is x_sting and x_base-- fit to line
         y_b = m*self.x_base + b
