@@ -5,8 +5,8 @@ import math
 import csv
 import cv2
 import bee_info
-from start_end import startFrame
-from start_end import endFrame
+from start_end import startFrame, endFrame, path
+
 
 def pos(bee, frame_num, body_part_x, body_part_y):
     bee_info.bee_update_info(bee, frame_num)
@@ -18,7 +18,7 @@ def pos(bee, frame_num, body_part_x, body_part_y):
 def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 
     #petiole is at 100,100 around, a few pixels off
-    with open('bee3_modified.csv') as fd:
+    with open(path) as fd:
         reader=csv.reader(fd)
         frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num]
 

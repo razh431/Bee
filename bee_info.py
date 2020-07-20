@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import bee1
-
+from start_end import startFrame, endFrame, path
 
 def bee_info(frame_num):
 
-    with open("bee3_modified.csv") as csvfile:
+    with open(path) as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
         #20th frame for now, 1st 3 is just headers
 
@@ -30,7 +30,7 @@ def bee_info(frame_num):
     return bee
 
 def bee_update_info(bee, frame_num):
-    with open("bee3_modified.csv") as csvfile:
+    with open(path) as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
         #20th frame for now, 1st 3 is just headers
         row_num =[row for idx, row in enumerate(reader) if idx == frame_num]

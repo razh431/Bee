@@ -4,13 +4,15 @@ import math
 import bee1
 import csv
 import bee_info
+from start_end import startFrame, endFrame, path
+
 
 """these frames are adjusted from new excel spreadsheet"""
 
 def ant_cba_angle_2d(frame):
+    # print(frame)
     bee = bee_info.bee_info(frame)
 
-    #v_cba is vector on cba, v_l is 2 points on left antenna, v_r is angle on right antenna
     y_b, y_s = bee.cba()
 
     v_cba = [bee.x_base - bee.x_sting, y_b - y_s]
@@ -43,7 +45,7 @@ def ant_len(startFrame, endFrame):
     antr_length = []
     antl_length = []
 
-    with open("bee3_modified.csv") as csvfile:
+    with open(path) as csvfile:
         reader = csv.reader(csvfile)
 
         row_num =[row for idx, row in enumerate(reader) if idx in range(startFrame, endFrame)]
@@ -58,19 +60,11 @@ def ant_len(startFrame, endFrame):
 
             antr_length.append(distr)
             antl_length.append(distl)
-            # if len(antr_length) > 30:
-            #     antr_length.remove(min(antr_length))
-            #
-            # if len(antl_length) > 30:
-            #     antl_length.remove(min(antl_length))
 
-    # print(numpy.percentile(antr_length, 98))
-    # print(numpy.percentile(antl_length, 98))
+    print(numpy.percentile(antr_length, 95))
+    print(numpy.percentile(antl_length, 95))
 
-    # antr_length.sort()
-    # antl_length.sort()
-    # print(antr_length)
-    # print(antl_length)
+
 
     return antl_length, antr_length
 

@@ -3,12 +3,12 @@ import os
 import csv
 import numpy as np
 import glob
-from start_end import startFrame
-from start_end import endFrame
+from start_end import startFrame, endFrame, dlt_small_sheet
+
 
 """make sure to change the start and end frames in plot and new_mapping files"""
 
-#
+
 
 cap= cv2.VideoCapture('/Users/rachelzhou/summer_research/swarm6.mp4')
 def make_480p():
@@ -27,21 +27,23 @@ def crop():
 
         frame_num = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
 
-        with open('single_bee_vids/bee3_1029_1940xypts.csv') as fd:
+        with open(dlt_small_sheet) as fd:
             reader=csv.reader(fd)
-            frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num-startFrame]
+            frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num]
 
         x = int(float(frame_num_rows[0][0]))
         y = int(float(frame_num_rows[0][1]))
 
-        path = '/Users/rachelzhou/Research/build_opencv/opencv/samples/python/single/images1'
-        cv2.imwrite(os.path.join(path , 'bee'+str(i)+'.jpg'), frame[y-100:y+100, x-100:x+100])
+
+        # path = '/Users/rachelzhou/Research/build_opencv/opencv/samples/python/single/images' + str(dlt_small_sheet)[3]
+        path = '/Users/rachelzhou/Research/build_opencv/opencv/samples/python/single/flow'
+        cv2.imwrite(os.path.join(path , 'bee'+str(i)+'.jpg'), frame[y-250:y+250, x-200:x])
         print(i)
         i+=1
 
-def frame_into_vid():
-    image_folder = 'images1'
-    video_name = 'bee3.avi'
+def frame_into_vid(dlt_small_sheet):
+    image_folder = 'images' + str(dlt_small_sheet)[3]
+    video_name = 'bee' + str(dlt_small_sheet)[3] + '.avi'
 
     img_list = os.listdir(image_folder)
     img_list.sort()
@@ -67,8 +69,8 @@ def frame_into_vid():
 
 
 # make_480p()
-# crop()
-# frame_into_vid()
+crop()
+# frame_into_vid(dlt_small_sheet)
 
 cap.release()
 cv2.destroyAllWindows()

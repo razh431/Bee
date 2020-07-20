@@ -6,11 +6,11 @@ import bee1
 import angle
 import bee_info
 import velocity
-import single
+import airspeed
 import matplotlib.pyplot as plt
 
-from start_end import startFrame
-from start_end import endFrame
+from start_end import startFrame, endFrame, path
+
 #x axis
 
 """velocity, antennae length, angles, plot on same"""
@@ -28,12 +28,12 @@ for i in x:
 
 #length of antennas throughout video
 antl_length, antr_length = angle.ant_len(0, endFrame-startFrame)
-if len(antl_length) == len(antr_length):
-    print('please make this work')
+
 #velocity of bees
 vel = velocity.vel(endFrame-startFrame)
 total_angle = [antl_length[i] + antr_length[i] for i in range(len(antl_length))]
 
+airv = airspeed.airv()
 
 if len(vel) != len(x):
     x = x[1:-1]
@@ -42,12 +42,15 @@ if len(vel) != len(x):
     total_angle = total_angle[1:-1]
     antl_length = antl_length[1:-1]
     antr_length = antr_length[1:-1]
+    airspeed = airv[1:-3]
 
+print(len(airv))
 
 plt.plot(x, total_angle)
-plt.plot(x, antr_length)
-plt.plot(x, antl_length)
-vel_l = plt.plot(x, vel)
+# plt.plot(x, antr_length)
+# plt.plot(x, antl_length)
+plt.plot(x, vel)
+plt.plot(x, airv[1:-1])
 
 
 
