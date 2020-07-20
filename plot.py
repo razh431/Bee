@@ -9,7 +9,7 @@ import velocity
 import airspeed
 import matplotlib.pyplot as plt
 
-from start_end import startFrame, endFrame, path
+from start_end import startFrame, endFrame, path, vid_num
 
 #x axis
 
@@ -30,33 +30,54 @@ for i in x:
 antl_length, antr_length = angle.ant_len(0, endFrame-startFrame)
 
 #velocity of bees
-vel = velocity.vel(endFrame-startFrame)
+vel = velocity.vel(endFrame-startFrame, 50)
 total_angle = [antl_length[i] + antr_length[i] for i in range(len(antl_length))]
 
-airv = airspeed.airv()
+delta_tot_angle = angle.roc_angle(total_angle)
 
 if len(vel) != len(x):
-    x = x[1:-1]
-    r_angle = r_angle[1:-1]
-    l_angle = l_angle[1:-1]
-    total_angle = total_angle[1:-1]
-    antl_length = antl_length[1:-1]
-    antr_length = antr_length[1:-1]
-    airspeed = airv[1:-3]
+    crop = 50
+    x = x[crop:-1]
+    r_angle = r_angle[crop:-1]
+    l_angle = l_angle[crop:-1]
+    delta_tot_angle = angle.roc_angle(total_angle)[crop-1:]
 
-print(len(airv))
+    total_angle = total_angle[crop:-1]
+    antl_length = antl_length[crop:-1]
+    antr_length = antr_length[crop:-1]
+    airv = airspeed.airv()[crop:-1]
 
-plt.plot(x, total_angle)
-# plt.plot(x, antr_length)
-# plt.plot(x, antl_length)
-plt.plot(x, vel)
-plt.plot(x, airv[1:-1])
 
+#keep these subplots 3 at a time
+
+fig, axs = plt.subplots(3)
+fig.suptitle('plots: ' + str(crop) + ', bee number: ' + str(vid_num))
+axs[0].plot(x, vel)
+axs[0].set_title('velocity w/ avg mean of ' + str(crop))
+
+axs[1].plot(x, airv)
+axs[1].set_title('airspeed')
+
+axs[2].plot(x, total_angle)
+axs[2].set_title('total angle')
+
+
+
+fig1, axs1 = plt.subplots(3)
+fig1.suptitle('plots: ' + str(crop) + ', bee number: ' + str(vid_num))
+
+axs1[0].plot(x, antl_length)
+axs1[0].set_title('antl_length')
+
+axs1[1].plot(x, delta_tot_angle)
+axs1[1].set_title('change in angle')
+
+axs1[2].plot(x, airv)
+axs1[2].set_title('airspeed')
 
 
 plt.xlabel('frame number')
-plt.ylabel('y - axis')
+# plt.ylabel('y - axis')
 
-plt.title('Graph')
 
 plt.show()

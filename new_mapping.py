@@ -45,9 +45,6 @@ def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 def map():
     cap= cv2.VideoCapture('/Users/rachelzhou/summer_research/swarm6.mp4')
 
-    #really really weird calculation: 1029-- 0-- 4, so 17th frame from excel
-    # that I was using becomes 1047- 17th
-
 
     cap.set(1, startFrame)
 

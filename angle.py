@@ -30,7 +30,6 @@ def ant_cba_angle_2d(frame):
     return left_angle, right_angle
 
 
-
 def angle_3d(frame):
     bee = bee_info.bee_info(frame)
 
@@ -38,6 +37,17 @@ def angle_3d(frame):
     v_video = [bee.x_left_ant - bee.x_base, bee.y_left_ant - bee.y_base]
     dist = numpy.linalg.norm(v_video)
     angle = math.degrees(numpy.arccos(numpy.clip(dist/52.0, -1.0, 1.0)))
+
+
+def roc_angle(total_angle):
+
+    change = []
+    for x, ang in enumerate(total_angle):
+        if x > 0 and x < len(total_angle) - 1:
+            change.append((total_angle[x-1] - total_angle[x+1])/2)
+
+    return change
+
 
 
 def ant_len(startFrame, endFrame):
@@ -81,8 +91,3 @@ def angle_between(v1, v2):
     #takes out if vectors are 1 or -1 (basically if they're the same direction)
     angle = math.degrees(numpy.arccos(numpy.clip(numpy.dot(v1_u, v2_u), -1.0, 1.0)))
     return angle
-
-
-# ant_cba_angle_2d(1090)
-# ant_len(1047,1047)
-# angle_3d(1047)

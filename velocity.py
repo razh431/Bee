@@ -7,7 +7,8 @@ from scipy import signal
 
 """find instantaneous velocity of bees by averaging 1 frame after with 1 frame before current frame"""
 
-def vel(num_frames):
+def vel(num_frames, crop):
+    #crop is the average mean filter
 
     v = []
 
@@ -15,12 +16,7 @@ def vel(num_frames):
         reader = csv.reader(csvfile)
         row_num = [row for idx, row in enumerate(reader) if idx in range(0,num_frames)]
 
-    x, y = moving_mean(row_num)
-
-    # b, a = signal.butter(1, x)
-    # c, d = signal.butter(1, y)
-    #
-    # print(b)
+    x, y = moving_mean(row_num, crop)
 
         #calculates instantaneous
         # instantv = inst(row_num)
@@ -41,19 +37,19 @@ def inst(row_num):
 
     return velocity
 
-def moving_mean(row_num):
+def moving_mean(row_num, crop):
     x = []
     y = []
     for i in range(0, len(row_num)):
         x.append(numpy.array(float(row_num[i][12])))
         y.append(numpy.array(float(row_num[i][13])))
 
-    avgx = ret(x, n = 25)
-    avgy = ret(y, n = 25)
+    avgx = ret(x, n = crop)
+    avgy = ret(y, n = crop)
 
     return avgx, avgy
 
-def ret(x, n = 25):
+def ret(x, n):
     ret = numpy.cumsum(x, dtype=float)
     ret[n:] = ret[n:] - ret[:-n]
     return ret[n - 1:] / n
@@ -68,5 +64,3 @@ def avg_vel(x, y):
             velocity.append(numpy.linalg.norm((disti - distf))/2)
 
     return velocity
-
-vel(endFrame - startFrame)

@@ -35,7 +35,7 @@ def crop():
         y = int(float(frame_num_rows[0][1]))
 
 
-        # path = '/Users/rachelzhou/Research/build_opencv/opencv/samples/python/single/images' + str(dlt_small_sheet)[3]
+
         path = '/Users/rachelzhou/Research/build_opencv/opencv/samples/python/single/flow'
         cv2.imwrite(os.path.join(path , 'bee'+str(i)+'.jpg'), frame[y-250:y+250, x-200:x])
         print(i)

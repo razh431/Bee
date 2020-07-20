@@ -12,28 +12,32 @@ I	Base [8]
 K	Sting [10]
 M	Petiole [12]
 
-y is jsut 1 letter off
-
-have to edit the output csv file because I can't figure out how to move everything :
+edit vid num!
 """
 
-#video start frame from swarm
-#1: 1002-2352
-#2: 1550- 2310
-#3: 1029- 1900
-#4: 1356-1856
-#6: 1920 - 2815
-startFrame = 1920
-endFrame = 2815
+#edit this!
+vid_num = 2
 
-path = 'bee6.csv'
-#
+
+bee_dict = {
+  1: [1002, 2352],
+  2: [1550, 2310],
+  3: [1029, 1900],
+  4: [1356, 1856],
+  6: [1920, 2815]
+}
+
+startFrame = bee_dict[vid_num][0]
+endFrame = bee_dict[vid_num][1]
+
+path = 'bee' + str(vid_num) + '.csv'
+
 #csv from big data sheet with all the xsv
 #csv_row is the starting row with prediction that is close to 1
 csv_row = 0
-video_num = 2
-dlt_small_sheet = "air_speedxypts.csv"
-dlt_big_sheet = "bee6DLC_resnet50_bee_walkingJun4shuffle1_311000.csv"
+video_num = 1
+dlt_small_sheet = "bee1_1002_2352xypts.csv"
+dlt_big_sheet = "bee1DLC_resnet50_bee_walkingJun4shuffle1_311000.csv"
 
 cols = [1, 2, 4, 5, 7, 8, 16, 17, 19, 20]
 
