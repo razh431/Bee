@@ -1,13 +1,18 @@
 import numpy as np
 import math
 import csv
-import bee1
 
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+from matplotlib.animation import FFMpegWriter
+
+
+import bee1
 import angle
 import bee_info
 import velocity
 import airspeed
-import matplotlib.pyplot as plt
 
 from start_end import startFrame, endFrame, path, vid_num
 
@@ -21,10 +26,13 @@ x = [frame for frame in range(startFrame, endFrame, 1)]
 #angles between body and antennas
 l_angle = []
 r_angle = []
+orientation = []
 for i in x:
-    left_angle, right_angle = angle.ant_cba_angle_2d(i-startFrame)
+    left_angle, right_angle, ori = angle.ant_cba_angle_2d(i-startFrame)
+    orientation.append(ori)
     l_angle.append(left_angle)
     r_angle.append(right_angle)
+
 
 #length of antennas throughout video
 antl_length, antr_length = angle.ant_len(0, endFrame-startFrame)
@@ -34,6 +42,8 @@ vel = velocity.vel(endFrame-startFrame, 50)
 total_angle = [antl_length[i] + antr_length[i] for i in range(len(antl_length))]
 
 delta_tot_angle = angle.roc_angle(total_angle)
+
+ori_angle = angle.orientation_rate(orientation)
 
 if len(vel) != len(x):
     crop = 50
@@ -46,6 +56,7 @@ if len(vel) != len(x):
     antl_length = antl_length[crop:-1]
     antr_length = antr_length[crop:-1]
     airv = airspeed.airv()[crop:-1]
+    ori_angle = ori_angle[crop-1:]
 
 
 #keep these subplots 3 at a time
@@ -72,12 +83,19 @@ axs1[0].set_title('antl_length')
 axs1[1].plot(x, delta_tot_angle)
 axs1[1].set_title('change in angle')
 
-axs1[2].plot(x, airv)
-axs1[2].set_title('airspeed')
+axs1[2].plot(x, ori_angle)
+axs1[2].set_title('orientation')
 
 
 plt.xlabel('frame number')
-# plt.ylabel('y - axis')
+# plt.ylabel('y - axis'
 
+
+metadata = dict(title='Bee Graphs')
+writer = FFMpegWriter(fps=15, metadata=metadata)
+
+with writer.saving(fig, str(crop) + ', bee number: ' + str(vid_num) + ".mp4", 100):
+    for i in x:
+        writer.grab_frame()
 
 plt.show()
