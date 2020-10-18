@@ -12,13 +12,13 @@ from start_end import startFrame, endFrame, path
 def ant_cba_angle_2d(frame):
     # print(frame)
     bee = bee_info.bee_info(frame)
-
+    
+    #central body access from bee, 2 points from cba
     y_b, y_s = bee.cba()
-
+    
+    #calculatng cba, left antenna line, right antenna as a straight line
     v_cba = [bee.x_base - bee.x_sting, y_b - y_s]
     v_l = [bee.x_left_ant - bee.x_base, bee.y_left_ant - y_b]
-
-
     v_r = [bee.x_right_ant - bee.x_base, bee.y_right_ant - y_b]
 
     left_angle = angle_between(v_cba, v_l)
@@ -31,6 +31,7 @@ def ant_cba_angle_2d(frame):
 
 
 def angle_3d(frame):
+    #find 3d angle of bee, not used
     bee = bee_info.bee_info(frame)
 
     max_ant = 52.0
@@ -39,6 +40,7 @@ def angle_3d(frame):
     angle = math.degrees(numpy.arccos(numpy.clip(dist/52.0, -1.0, 1.0)))
 
 
+    #rate of change of angle-- only positive values right now
 def roc_angle(total_angle):
 
     change = []
@@ -49,9 +51,9 @@ def roc_angle(total_angle):
     return change
 
 
-
+#calculates antennae length 
 def ant_len(startFrame, endFrame):
-    '''returns the 98th precentile of the antennae lengths: let's go with 52'''
+    '''returns the 95th precentile of the antennae lengths'''
     antr_length = []
     antl_length = []
 
@@ -59,7 +61,9 @@ def ant_len(startFrame, endFrame):
         reader = csv.reader(csvfile)
 
         row_num =[row for idx, row in enumerate(reader) if idx in range(startFrame, endFrame)]
-
+    
+        #calculate antennae lengths from pythagorean theorum of left, right, base attributes
+        #numbers correspond to excel shets from the bee.csv files from path
         for x in range(0, len(row_num)):
             v_right_ant = numpy.array((float(row_num[x][6]), float(row_num[x][7])))
             v_left_ant = numpy.array((float(row_num[x][4]), float(row_num[x][5])))
@@ -71,6 +75,7 @@ def ant_len(startFrame, endFrame):
             antr_length.append(distr)
             antl_length.append(distl)
 
+    #grabs percentiles
     print(numpy.percentile(antr_length, 95))
     print(numpy.percentile(antl_length, 95))
 
