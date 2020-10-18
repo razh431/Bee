@@ -4,16 +4,17 @@ import math
 import csv
 import bee1
 
-
+#dont use bee_info, use bee_update_info
 def bee_info(frame_num):
 
     with open("bee3_antenna.csv") as csvfile:
         reader = csv.reader(csvfile) # change contents to floats
         #20th frame for now, 1st 3 is just headers
 
-        #1027 is magic number: start of frames in csv don't edit if playing around with code
+        #1027 is magic number: start of frames in csv file don't edit if playing around with code
         row_num =[row for idx, row in enumerate(reader) if idx == frame_num - 1027]
 
+    #these correspond to the bee.csv bee path. columns are body parts. 
     x_base = float(row_num[0][7]) #150.921
     y_base = float(row_num[0][8]) #109.225
     x_sting = float(row_num[0][16]) #31.59
