@@ -1,4 +1,4 @@
-"""1 tracker set = all 5 points with correct color"""
+"""1 tracker set = all 5 points with correct color. track the different positions-- moved into bee1 but reference back"""
 
 class tracker():
     def __init__(self, x_base, y_base, x_sting, y_sting, x_petiole, y_petiole, x_right_ant, y_right_ant, x_left_ant, y_left_ant):
