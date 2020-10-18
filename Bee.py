@@ -2,6 +2,7 @@
 
 class Bee():
     def __init__(self, x_base, y_base, x_sting, y_sting, x_petiole, y_petiole, x_right_ant, y_right_ant, x_left_ant, y_left_ant):
+        """initialize the different body positions on a bee"""
         self.x_base = x_base
         self.y_base = -y_base #negative because of coordinate systems
         self.x_sting = x_sting
