@@ -1,5 +1,5 @@
 # Bee
-Newmapping.py demos project for bee model training if there are the correct excel files and bee start/end frames.
+Newmapping.py and plot.py demos project for bee model training if there are the correct excel files and bee start/end frames.
 
 Project done for Engineering Learning Initiative Grant under Collective Embodied Intelligence Lab: 
 
