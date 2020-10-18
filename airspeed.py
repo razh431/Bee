@@ -3,7 +3,7 @@ import csv
 import math
 from start_end import startFrame, endFrame, path
 
-
+"""grabs air speed from airflow data (from the video) put into list""" 
 
 def airv():
     with open('flow.csv') as csvfile:
