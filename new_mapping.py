@@ -21,11 +21,13 @@ def pos(bee, frame_num, body_part_x, body_part_y):
 #returns adjusted position by calculating its position relative to petiole. petiole is at center of bee
 def adjust_pos(body_part_x, body_part_y, bee, frame_num):
 
-    #petiole is at 100,100 around, a few pixels off
+    #petiole is at 100,100 around, a few pixels off. 
     with open(path) as fd:
         reader=csv.reader(fd)
+        #the 2d array of x and y indices of the needed frame
         frame_num_rows=[row for idx, row in enumerate(reader) if idx == frame_num]
-
+    
+    #get each x, y from the array
     x = int(float(frame_num_rows[0][0]))
     y = int(float(frame_num_rows[0][1]))
 
