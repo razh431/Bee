@@ -16,9 +16,8 @@ import airspeed
 
 from start_end import startFrame, endFrame, path, vid_num
 
-#x axis
 
-"""velocity, antennae length, angles, plot on same"""
+"""plotting velocity, antennae length, angles, orienttion angle graph vs time on same graph"""
 
 x = [frame for frame in range(startFrame, endFrame, 1)]
 # angle = [angle.ant_cba_angle_2d(i) for i in x]
@@ -37,14 +36,15 @@ for i in x:
 #length of antennas throughout video
 antl_length, antr_length = angle.ant_len(0, endFrame-startFrame)
 
-#velocity of bees
+#velocity of bees, weighted average-- second parameter is the weight. 
 vel = velocity.vel(endFrame-startFrame, 50)
+
+#other behavioral parameters, refer o their specific python files
 total_angle = [antl_length[i] + antr_length[i] for i in range(len(antl_length))]
-
 delta_tot_angle = angle.roc_angle(total_angle)
-
 ori_angle = angle.orientation_rate(orientation)
 
+#make them all the same length, just truncating the beginning. offset because of velocity
 if len(vel) != len(x):
     crop = 50
     x = x[crop:-1]
@@ -60,7 +60,6 @@ if len(vel) != len(x):
 
 
 #keep these subplots 3 at a time
-
 fig, axs = plt.subplots(3)
 fig.suptitle('plots: ' + str(crop) + ', bee number: ' + str(vid_num))
 axs[0].plot(x, vel)
@@ -73,7 +72,7 @@ axs[2].plot(x, total_angle)
 axs[2].set_title('total angle')
 
 
-
+#graphing LEFT antenna length, total angle change, and orientation rate
 fig1, axs1 = plt.subplots(3)
 fig1.suptitle('plots: ' + str(crop) + ', bee number: ' + str(vid_num))
 
@@ -94,6 +93,7 @@ plt.xlabel('frame number')
 metadata = dict(title='Bee Graphs')
 writer = FFMpegWriter(fps=15, metadata=metadata)
 
+#save vid
 with writer.saving(fig, str(crop) + ', bee number: ' + str(vid_num) + ".mp4", 100):
     for i in x:
         writer.grab_frame()
