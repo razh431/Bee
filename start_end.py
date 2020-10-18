@@ -18,7 +18,7 @@ edit vid num!
 #edit this!
 vid_num = 2
 
-
+#start and end frames of each bee. bee number 5 is deaded.
 bee_dict = {
   1: [1002, 2352],
   2: [1550, 2310],
@@ -39,8 +39,10 @@ video_num = 1
 dlt_small_sheet = "bee1_1002_2352xypts.csv"
 dlt_big_sheet = "bee1DLC_resnet50_bee_walkingJun4shuffle1_311000.csv"
 
+#columns of the spreadhseet of dlt_big
 cols = [1, 2, 4, 5, 7, 8, 16, 17, 19, 20]
 
+#put frame data (the contents of dlt_small sheet) into dlt_big_sheet
 def xy():
     with open(dlt_small_sheet) as f,open(str(dlt_big_sheet)[:4] + '.csv', 'a') as f_out:
          reader = csv.reader(f)
@@ -52,6 +54,7 @@ def xy():
 
     return num
 
+#put the other data-- positions into the current dlt_spreadsheet created from the frames
 def rest(num1):
     with open(dlt_big_sheet) as f, open(str(dlt_big_sheet)[:4] + '.csv', 'a') as f_out:
          reader = csv.reader(f)
